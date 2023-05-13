@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Book Store Application</title>
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm" >
+            <div class="container">
+                <a class="navbar-brand" href="/">Book Store</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/contactus">Contact</a>
+                       
+                        <li class="nav-item">
+                            <a class="nav-link" href="/book/getallbooks">Books</a>
+                        </li>
+                    </ul>
+                    <div  class="btn-group ">
+                        <a href="#" class="btn btn-primary">Login</a>
+                        <a href="#" class="btn btn-outline-primary">Register</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+    <footer class="border-top fixed-bottom">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center ">
+            <p class="col-md-4 mb-0 text-muted">© 2021 Company, Inc</p>
+
+            <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+
+            <ul class="nav col-md-4 justify-content-end">
+                <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+            </ul>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    @*
+        render section 主要是用来做替换用来的 替换，很重要，相当于在_layout里面插入一个标记
+        其他的index.html来模板_layout里面找这个标记，把内容替换进来
+    *@
+    @RenderSection("script",false)
+</body>
+</html>
