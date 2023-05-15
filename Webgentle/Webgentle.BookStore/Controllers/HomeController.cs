@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Webgentle.BookStore.Models;
 
 namespace Webgentle.BookStore.Controllers
 {
@@ -14,7 +15,7 @@ namespace Webgentle.BookStore.Controllers
             return View();
         }
 
-        public ViewResult ContactUs ()
+        public ViewResult ContactUs()
         {
             return View();
         }

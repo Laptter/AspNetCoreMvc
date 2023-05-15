@@ -8,9 +8,9 @@ namespace Webgentle.BookStore.Controllers
     {
         private readonly BookRepository _bookRepository;
 
-        public BookController()
+        public BookController(BookRepository bookRepository)
         {
-            _bookRepository = new BookRepository();
+            _bookRepository = bookRepository;
         }
         public IActionResult Index()
         {
@@ -22,7 +22,7 @@ namespace Webgentle.BookStore.Controllers
             var data = _bookRepository.GetAllBooks();
             return View(data);
         }
-
+        [Route("book-detail/{id}", Name = "bookDetailsRoute")]
         public ViewResult GetBook(int id)
         {
             var data = _bookRepository.GetBookById(id);
@@ -32,6 +32,24 @@ namespace Webgentle.BookStore.Controllers
         public IEnumerable<BookModel> SearchBooks(string bookName, string authorName)
         {
             return _bookRepository.SearchBook(bookName, authorName);
+        }
+
+        public ViewResult AddNewBook(bool isSuccess=false,int bookId=0)
+        {
+            ViewBag.IsSuccess=isSuccess;
+            ViewBag.BookId=bookId;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewBook(BookModel bookModel)
+        {
+            int id = await _bookRepository.AddNewBook(bookModel);
+            if (id > 0)
+            {
+                return RedirectToAction(nameof(AddNewBook),new { IsSuccess=true, BookId =id});
+            }
+            return View(id);
         }
     }
 }

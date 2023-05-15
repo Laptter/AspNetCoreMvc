@@ -1,9 +1,7 @@
-﻿@using Webgentle.BookStore.Models
-@model BookModel
+﻿@model BookModel
 @{
-    Layout = "_Layout";
+    ViewData["title"] = Model.Title;
 }
-
 <div class="container">
     <h3 >Book Details</h3>
     <div class="row">
@@ -80,7 +78,7 @@
         </div>
     </div>
        
-    <div class="row my-3  g-3 bg-light">
+    <div class="row my-3  g-3 bg-light" id="similarBooks">
         <h1>Similar Books</h1>
         @for (int i = 0; i < 5; i++)
         {

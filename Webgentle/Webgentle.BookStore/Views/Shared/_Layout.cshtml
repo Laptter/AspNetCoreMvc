@@ -3,9 +3,14 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Book Store Application</title>
+    <title>@ViewData["title"] | Book Store Application</title>
     <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    </environment>
 </head>
 <body>
     <header>
@@ -18,16 +23,18 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="nav-link active"  asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/home/about">About</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/home/contactus">Contact</a>
-                       
+                            <a class="nav-link" asp-controller="Home" asp-action="ContactUs" >Contact</a>
                         <li class="nav-item">
-                            <a class="nav-link" href="/book/getallbooks">Books</a>
+                            <a class="nav-link" asp-controller="Book" asp-action="GetAllBooks">All Books</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Book" asp-action="AddNewBook">Add New Book</a>
                         </li>
                     </ul>
                     <div  class="btn-group ">
@@ -58,8 +65,23 @@
             </ul>
         </div>
     </footer>
-    <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script 
+            src="~/lib/jquery/jquery.min.js" 
+            asp-fallback-src="~/lib/jquery/jquery.min.js"
+            asp-fallback-test-class="carousel-caption"
+            asp-fallback-test-property="display"
+            asp-fallback-test-value="none">
+        </script>
+        <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    </environment>
+    
+    
     @*
         render section 主要是用来做替换用来的 替换，很重要，相当于在_layout里面插入一个标记
         其他的index.html来模板_layout里面找这个标记，把内容替换进来

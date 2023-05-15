@@ -1,20 +1,46 @@
-﻿using Webgentle.BookStore.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Webgentle.BookStore.Data;
+using Webgentle.BookStore.Models;
 
 namespace Webgentle.BookStore.Repository
 {
     public class BookRepository
     {
+        private readonly BookStoreContext _bookStoreContext;
+
+        public BookRepository(BookStoreContext bookStoreContext)
+        {
+            _bookStoreContext = bookStoreContext;
+        }
+
+
+        public async Task<int> AddNewBook(BookModel book)
+        {
+            var newBook = new Book()
+            {
+                Author = book.Author,
+                CreateTime = DateTime.UtcNow,
+                Description = book.Description,
+                Title = book.Title,
+                TotalPages = book.TotalPages,
+                UpdateTime = DateTime.UtcNow,
+            };
+            await _bookStoreContext.Books.AddAsync(newBook);
+            await _bookStoreContext.SaveChangesAsync();
+            return newBook.Id;
+        }
+
         public IEnumerable<BookModel> GetAllBooks()
         {
             return DataSource();
         }
 
-        public BookModel GetBookById(int id) 
+        public async Task<Book> GetBookById(int id)
         {
-            return DataSource().FirstOrDefault(x => x.Id == id);
+            return await _bookStoreContext.Books.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public IEnumerable<BookModel> SearchBook(string title,string authorName) 
+        public IEnumerable<BookModel> SearchBook(string title, string authorName)
         {
             return DataSource().Where(_ => _.Title.Contains(title) && _.Author.Contains(authorName));
         }
