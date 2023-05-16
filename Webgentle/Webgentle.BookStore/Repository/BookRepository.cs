@@ -13,7 +13,6 @@ namespace Webgentle.BookStore.Repository
             _bookStoreContext = bookStoreContext;
         }
 
-
         public async Task<int> AddNewBook(BookModel book)
         {
             var newBook = new Book()
@@ -22,7 +21,8 @@ namespace Webgentle.BookStore.Repository
                 CreateTime = DateTime.UtcNow,
                 Description = book.Description,
                 Title = book.Title,
-                TotalPages = book.TotalPages,
+                Language = book.Language,
+                TotalPages = book.TotalPages.HasValue ? book.TotalPages.Value : 0,
                 UpdateTime = DateTime.UtcNow,
             };
             await _bookStoreContext.Books.AddAsync(newBook);
@@ -30,31 +30,69 @@ namespace Webgentle.BookStore.Repository
             return newBook.Id;
         }
 
-        public IEnumerable<BookModel> GetAllBooks()
+        public async Task<List<BookModel>> GetAllBooks()
         {
-            return DataSource();
+            var allBooks = await _bookStoreContext.Books.ToListAsync();
+            var books = new List<BookModel>();
+            if (allBooks?.Any() == true)
+            {
+                foreach (var book in allBooks)
+                {
+                    books.Add(new BookModel()
+                    {
+                        Id = book.Id,
+                        Author = book.Author,
+                        Description = book.Description,
+                        Title = book.Title,
+                        TotalPages = book.TotalPages,
+                        Language = book.Language,
+                        Category = book.Category,
+                    });
+                }
+            }
+            return books;
         }
 
-        public async Task<Book> GetBookById(int id)
+        public async Task<BookModel> GetBookById(int id)
         {
-            return await _bookStoreContext.Books.FirstOrDefaultAsync(x => x.Id == id);
+            var book = await _bookStoreContext.Books.FindAsync(id);
+            if (book != null)
+            {
+                return new BookModel()
+                {
+                    Id = book.Id,
+                    Author = book.Author,
+                    Description = book.Description,
+                    Title = book.Title,
+                    TotalPages = book.TotalPages,
+                    Language = book.Language,
+                    Category = book.Category,
+                };
+            }
+            return null;
         }
 
         public IEnumerable<BookModel> SearchBook(string title, string authorName)
         {
-            return DataSource().Where(_ => _.Title.Contains(title) && _.Author.Contains(authorName));
-        }
-
-        private List<BookModel> DataSource()
-        {
-            return new List<BookModel>()
+            var allBooks = _bookStoreContext.Books.Where(_ => _.Title.Contains(title) && _.Author.Contains(authorName));
+            var books = new List<BookModel>();
+            if (allBooks?.Any() == true)
             {
-                new BookModel() { Id=1,Title="MVC", Author="King",Description="This is about MVC", Category="Programing", Language="English", TotalPages=134},
-                new BookModel() { Id=2,Title="C++", Author="Monika",Description= "This is about C++", Category="Talking", Language="Chinese", TotalPages=124},
-                new BookModel() { Id=3,Title="C#", Author="Jack",Description= "This is about C#", Category="Cooking", Language="English", TotalPages=1134},
-                new BookModel() { Id=4,Title="Java", Author="Laptter",Description= "This is about Java", Category="Design", Language="Japan", TotalPages=2280},
-                new BookModel() { Id=5,Title="Php", Author="Lucy",Description= "This is about Php", Category="News", Language="French", TotalPages=880},
-            };
+                foreach (var book in allBooks)
+                {
+                    books.Add(new BookModel()
+                    {
+                        Id = book.Id,
+                        Author = book.Author,
+                        Description = book.Description,
+                        Title = book.Title,
+                        TotalPages = book.TotalPages,
+                        Language = book.Language,
+                        Category = book.Category,
+                    });
+                }
+            }
+            return books;
         }
     }
 }

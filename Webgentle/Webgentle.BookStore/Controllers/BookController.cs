@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Webgentle.BookStore.Models;
 using Webgentle.BookStore.Repository;
 
@@ -17,15 +18,15 @@ namespace Webgentle.BookStore.Controllers
             return View();
         }
 
-        public ViewResult GetAllBooks()
+        public async Task<ViewResult> GetAllBooks()
         {
-            var data = _bookRepository.GetAllBooks();
+            var data = await _bookRepository.GetAllBooks();
             return View(data);
         }
         [Route("book-detail/{id}", Name = "bookDetailsRoute")]
-        public ViewResult GetBook(int id)
+        public async Task<ViewResult> GetBook(int id)
         {
-            var data = _bookRepository.GetBookById(id);
+            var data = await _bookRepository.GetBookById(id);
             return View(data);
         }
 
@@ -34,22 +35,25 @@ namespace Webgentle.BookStore.Controllers
             return _bookRepository.SearchBook(bookName, authorName);
         }
 
-        public ViewResult AddNewBook(bool isSuccess=false,int bookId=0)
+        public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
         {
-            ViewBag.IsSuccess=isSuccess;
-            ViewBag.BookId=bookId;
+            ViewBag.IsSuccess = isSuccess;
+            ViewBag.BookId = bookId;
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
-            int id = await _bookRepository.AddNewBook(bookModel);
-            if (id > 0)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(AddNewBook),new { IsSuccess=true, BookId =id});
+                int id = await _bookRepository.AddNewBook(bookModel);
+                if (id > 0)
+                {
+                    return RedirectToAction(nameof(AddNewBook), new { IsSuccess = true, BookId = id });
+                }
             }
-            return View(id);
+            return View();
         }
     }
 }
