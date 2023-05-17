@@ -5,7 +5,7 @@
 <div class="container">
     <h3 class="display-4">Add new book</h3>
     <hr />
-    @if (ViewBag.IsSuccess==true)
+    @if (ViewBag.IsSuccess == true)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Holy guacamole!</strong> You should check in on some of those fields below.
@@ -13,8 +13,14 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-    <form method="post" asp-controller="book" asp-action="addNewBook">
 
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border " role="status" id="loader" style="display:none">
+            
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data"  data-ajax-loading="#loader" asp-controller="book" asp-action="addNewBook">
         <div>
             <label asp-for="LanguageID" class="form-control-plaintext"></label>
             <select asp-for="LanguageID" class="form-control dropdown" asp-items="ViewBag.Language">
@@ -23,27 +29,45 @@
             <span asp-validation-for="LanguageID" class="text-danger"></span>
         </div>
 
-        <div >
+        <div>
             <label asp-for="Title" class="form-control-plaintext"></label>
             <input class="form-control" asp-for="Title" placeholder="Title">
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
-        <div >
+        <div>
             <label asp-for="Author" class="form-control-plaintext"></label>
             <input class="form-control" asp-for="Author" placeholder="Author">
             <span asp-validation-for="Author" class="text-danger"></span>
         </div>
 
-        <div >
+        <div>
             <label asp-for="Description" class="form-control-plaintext"></label>
             <textarea asp-for="Description" class="form-control"></textarea>
         </div>
 
-        <div >
+        <div>
             <label asp-for="TotalPages" class="form-control-plaintext"></label>
             <input type="number" class="form-control" asp-for="TotalPages" placeholder="TotalPages">
             <span asp-validation-for="TotalPages" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="CoverPhoto" class="form-control-plaintext"></label>
+            <div class="input-group mb-3">
+                <input  asp-for="CoverPhoto" class="form-control" id="inputGroupFile02">
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+            </div>
+            <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="GalleryFiles" class="form-control-plaintext"></label>
+            <div class="input-group mb-3">
+                <input  asp-for="GalleryFiles" class="form-control" id="inputGroupFile03">
+                <label class="input-group-text" for="inputGroupFile03">Upload</label>
+            </div>
+            <span asp-validation-for="GalleryFiles" class="text-danger"></span>
         </div>
 
         <div class="form-control-plaintext">
@@ -51,4 +75,12 @@
         </div>
     </form>
 </div>
+
+@section script{
+    <script>
+        function myComplete() {
+            console.log("complete");
+        }
+    </script>
+}
 

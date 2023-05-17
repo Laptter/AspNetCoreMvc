@@ -12,3 +12,5 @@
 /Webgentle/Webgentle.BookStore/.config
 /Webgentle/Webgentle.BookStore/Webgentle.BookStore.csproj.user
 /Webgentle/Webgentle.BookStore/wwwroot/lib
+/Webgentle/Webgentle.BookStore/wwwroot/books/cover
+/Webgentle/Webgentle.BookStore/wwwroot/books/gallery

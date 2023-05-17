@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using Webgentle.BookStore.Data;
 using Webgentle.BookStore.Models;
 
@@ -24,7 +25,19 @@ namespace Webgentle.BookStore.Repository
                 LanguageID = book.LanguageID.Value,
                 TotalPages = book.TotalPages.HasValue ? book.TotalPages.Value : 0,
                 UpdateTime = DateTime.UtcNow,
+                CoverImageUrl = book.CoverImageUrl,
             };
+            newBook.BookGalleries = new List<BookGallery>();
+            book.Gallery.ForEach(gallery =>
+            {
+                newBook.BookGalleries.Add(new BookGallery()
+                {
+                    BookId = gallery.Id,
+                    Name = gallery.Name,
+                    URL = gallery.URL,
+                });
+            });
+
             await _bookStoreContext.Books.AddAsync(newBook);
             await _bookStoreContext.SaveChangesAsync();
             return newBook.Id;
@@ -39,6 +52,7 @@ namespace Webgentle.BookStore.Repository
             {
                 foreach (var book in allBooks)
                 {
+
                     books.Add(new BookModel()
                     {
                         Id = book.Id,
@@ -49,6 +63,8 @@ namespace Webgentle.BookStore.Repository
                         LanguageID = book.LanguageID,
                         Language = allLanguages.FirstOrDefault(_ => _.Id == book.LanguageID)?.Name,
                         Category = book.Category,
+                        CoverImageUrl = book.CoverImageUrl,
+
                     });
                 }
             }
@@ -61,6 +77,8 @@ namespace Webgentle.BookStore.Repository
             var allLanguages = await _bookStoreContext.Languagess.ToListAsync();
             if (book != null)
             {
+                var list = new List<GalleryModel>();
+                list.AddRange(book.BookGalleries.Select(_ => new GalleryModel() { Id = _.Id, Name = _.Name, URL = _.URL }));
                 return new BookModel()
                 {
                     Id = book.Id,
@@ -71,6 +89,8 @@ namespace Webgentle.BookStore.Repository
                     LanguageID = book.LanguageID,
                     Language = allLanguages.FirstOrDefault(_ => _.Id == book.LanguageID)?.Name,
                     Category = book.Category,
+                    CoverImageUrl = book.CoverImageUrl,
+                    Gallery = list
                 };
             }
             return null;

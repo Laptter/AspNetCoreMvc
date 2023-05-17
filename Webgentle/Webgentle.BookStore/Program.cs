@@ -5,7 +5,9 @@ using Webgentle.BookStore.Repository;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 #if DEBUG
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation()
+    .AddViewOptions(option => option.HtmlHelperOptions.ClientValidationEnabled = true);
 #endif
 
 

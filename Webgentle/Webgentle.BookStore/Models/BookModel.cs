@@ -19,5 +19,9 @@ namespace Webgentle.BookStore.Models
         [Range(1, 10000)]
         [DisplayName("pages of book")]
         public int? TotalPages { get; set; }
+        public string CoverImageUrl { get; set; }
+        public IFormFile CoverPhoto { get; set; }
+        public IFormFileCollection GalleryFiles { get; set; }
+        public List<GalleryModel> Gallery { get; set; }
     }
 }
