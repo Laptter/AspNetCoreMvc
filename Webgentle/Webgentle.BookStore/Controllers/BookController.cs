@@ -8,10 +8,12 @@ namespace Webgentle.BookStore.Controllers
     public class BookController : Controller
     {
         private readonly BookRepository _bookRepository;
+        private readonly LanguageRepository _languageRepository;
 
-        public BookController(BookRepository bookRepository)
+        public BookController(BookRepository bookRepository, LanguageRepository languageRepository)
         {
             _bookRepository = bookRepository;
+            _languageRepository = languageRepository;
         }
         public IActionResult Index()
         {
@@ -35,10 +37,12 @@ namespace Webgentle.BookStore.Controllers
             return _bookRepository.SearchBook(bookName, authorName);
         }
 
-        public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
+        public async Task<ViewResult> AddNewBook(bool isSuccess = false, int bookId = 0)
         {
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
+            var languages = await _languageRepository.GetLanguages();
+            ViewBag.Language = new MultiSelectList(languages, "Id", "Name");
             return View();
         }
 
@@ -53,6 +57,8 @@ namespace Webgentle.BookStore.Controllers
                     return RedirectToAction(nameof(AddNewBook), new { IsSuccess = true, BookId = id });
                 }
             }
+            var languages = await _languageRepository.GetLanguages();
+            ViewBag.Language = new MultiSelectList(languages, "Id", "Name");
             return View();
         }
     }

@@ -21,7 +21,7 @@ namespace Webgentle.BookStore.Repository
                 CreateTime = DateTime.UtcNow,
                 Description = book.Description,
                 Title = book.Title,
-                Language = book.Language,
+                LanguageID = book.LanguageID.Value,
                 TotalPages = book.TotalPages.HasValue ? book.TotalPages.Value : 0,
                 UpdateTime = DateTime.UtcNow,
             };
@@ -33,6 +33,7 @@ namespace Webgentle.BookStore.Repository
         public async Task<List<BookModel>> GetAllBooks()
         {
             var allBooks = await _bookStoreContext.Books.ToListAsync();
+            var allLanguages = await _bookStoreContext.Languagess.ToListAsync();
             var books = new List<BookModel>();
             if (allBooks?.Any() == true)
             {
@@ -45,7 +46,8 @@ namespace Webgentle.BookStore.Repository
                         Description = book.Description,
                         Title = book.Title,
                         TotalPages = book.TotalPages,
-                        Language = book.Language,
+                        LanguageID = book.LanguageID,
+                        Language = allLanguages.FirstOrDefault(_ => _.Id == book.LanguageID)?.Name,
                         Category = book.Category,
                     });
                 }
@@ -56,6 +58,7 @@ namespace Webgentle.BookStore.Repository
         public async Task<BookModel> GetBookById(int id)
         {
             var book = await _bookStoreContext.Books.FindAsync(id);
+            var allLanguages = await _bookStoreContext.Languagess.ToListAsync();
             if (book != null)
             {
                 return new BookModel()
@@ -65,7 +68,8 @@ namespace Webgentle.BookStore.Repository
                     Description = book.Description,
                     Title = book.Title,
                     TotalPages = book.TotalPages,
-                    Language = book.Language,
+                    LanguageID = book.LanguageID,
+                    Language = allLanguages.FirstOrDefault(_ => _.Id == book.LanguageID)?.Name,
                     Category = book.Category,
                 };
             }
@@ -87,7 +91,7 @@ namespace Webgentle.BookStore.Repository
                         Description = book.Description,
                         Title = book.Title,
                         TotalPages = book.TotalPages,
-                        Language = book.Language,
+                        LanguageID = book.LanguageID,
                         Category = book.Category,
                     });
                 }

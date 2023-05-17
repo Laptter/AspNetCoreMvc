@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Webgentle.BookStore.Enums;
 
 namespace Webgentle.BookStore.Models
 {
@@ -14,9 +13,9 @@ namespace Webgentle.BookStore.Models
         public string Author { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
+        [Required]
+        public int? LanguageID { get; set; }
         public string Language { get; set; }
-        [Required(ErrorMessage = "please select the language of the book")]
-        public Language? LanguageEnum { get; set; }
         [Range(1, 10000)]
         [DisplayName("pages of book")]
         public int? TotalPages { get; set; }

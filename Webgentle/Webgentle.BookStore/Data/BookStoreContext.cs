@@ -11,10 +11,6 @@ namespace Webgentle.BookStore.Data
         }
 
         public DbSet<Book> Books { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
+        public DbSet<Language> Languagess { get; set; }
     }
 }

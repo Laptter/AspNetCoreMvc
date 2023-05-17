@@ -1,5 +1,4 @@
-﻿@using Webgentle.BookStore.Enums
-@model BookModel
+﻿@model BookModel
 @{
     ViewData["title"] = "Add New Book";
 }
@@ -17,11 +16,11 @@
     <form method="post" asp-controller="book" asp-action="addNewBook">
 
         <div>
-            <label asp-for="LanguageEnum" class="form-control-plaintext"></label>
-            <select asp-for="LanguageEnum" class="form-control dropdown" asp-items="Html.GetEnumSelectList<Language>()">
+            <label asp-for="LanguageID" class="form-control-plaintext"></label>
+            <select asp-for="LanguageID" class="form-control dropdown" asp-items="ViewBag.Language">
                 <option value="">please choose book language</option>
             </select>
-            <span asp-validation-for="LanguageEnum" class="text-danger"></span>
+            <span asp-validation-for="LanguageID" class="text-danger"></span>
         </div>
 
         <div >

@@ -2,7 +2,7 @@
 
 namespace Webgentle.BookStore.Enums
 {
-    public enum Language
+    public enum LanguageEnum
     {
         [Display(Name = "Hindi Language")]
         Hindi = 10,
