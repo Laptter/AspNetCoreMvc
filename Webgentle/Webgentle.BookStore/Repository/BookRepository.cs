@@ -27,10 +27,10 @@ namespace Webgentle.BookStore.Repository
                 UpdateTime = DateTime.UtcNow,
                 CoverImageUrl = book.CoverImageUrl,
             };
-            newBook.BookGalleries = new List<BookGallery>();
+            newBook.BookGallery = new List<BookGallery>();
             book.Gallery.ForEach(gallery =>
             {
-                newBook.BookGalleries.Add(new BookGallery()
+                newBook.BookGallery.Add(new BookGallery()
                 {
                     BookId = gallery.Id,
                     Name = gallery.Name,
@@ -45,14 +45,13 @@ namespace Webgentle.BookStore.Repository
 
         public async Task<List<BookModel>> GetAllBooks()
         {
-            var allBooks = await _bookStoreContext.Books.ToListAsync();
+            var allBooks = await _bookStoreContext.Books.Include(_ => _.BookGallery).ToListAsync();
             var allLanguages = await _bookStoreContext.Languagess.ToListAsync();
             var books = new List<BookModel>();
             if (allBooks?.Any() == true)
             {
                 foreach (var book in allBooks)
                 {
-
                     books.Add(new BookModel()
                     {
                         Id = book.Id,
@@ -63,8 +62,7 @@ namespace Webgentle.BookStore.Repository
                         LanguageID = book.LanguageID,
                         Language = allLanguages.FirstOrDefault(_ => _.Id == book.LanguageID)?.Name,
                         Category = book.Category,
-                        CoverImageUrl = book.CoverImageUrl,
-
+                        CoverImageUrl = book.CoverImageUrl
                     });
                 }
             }
@@ -73,13 +71,11 @@ namespace Webgentle.BookStore.Repository
 
         public async Task<BookModel> GetBookById(int id)
         {
-            var book = await _bookStoreContext.Books.FindAsync(id);
-            var allLanguages = await _bookStoreContext.Languagess.ToListAsync();
-            if (book != null)
-            {
-                var list = new List<GalleryModel>();
-                list.AddRange(book.BookGalleries.Select(_ => new GalleryModel() { Id = _.Id, Name = _.Name, URL = _.URL }));
-                return new BookModel()
+            return await _bookStoreContext
+                .Books
+                .Where(_ => _.Id == id)
+                .Include(_ => _.BookGallery)
+                .Select(book => new BookModel()
                 {
                     Id = book.Id,
                     Author = book.Author,
@@ -87,13 +83,12 @@ namespace Webgentle.BookStore.Repository
                     Title = book.Title,
                     TotalPages = book.TotalPages,
                     LanguageID = book.LanguageID,
-                    Language = allLanguages.FirstOrDefault(_ => _.Id == book.LanguageID)?.Name,
+                    Language = book.Language.Name,
                     Category = book.Category,
                     CoverImageUrl = book.CoverImageUrl,
-                    Gallery = list
-                };
-            }
-            return null;
+                    Gallery = book.BookGallery.Select(_ => new GalleryModel() { Id = _.Id, Name = _.Name, URL = _.URL }).ToList()
+                })
+                .FirstOrDefaultAsync();
         }
 
         public IEnumerable<BookModel> SearchBook(string title, string authorName)

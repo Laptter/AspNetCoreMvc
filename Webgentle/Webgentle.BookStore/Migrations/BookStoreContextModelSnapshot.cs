@@ -85,7 +85,7 @@ namespace Webgentle.BookStore.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("BookGalleries");
+                    b.ToTable("BookGallery");
                 });
 
             modelBuilder.Entity("Webgentle.BookStore.Data.Language", b =>
@@ -121,7 +121,7 @@ namespace Webgentle.BookStore.Migrations
             modelBuilder.Entity("Webgentle.BookStore.Data.BookGallery", b =>
                 {
                     b.HasOne("Webgentle.BookStore.Data.Book", "Book")
-                        .WithMany("BookGalleries")
+                        .WithMany("BookGallery")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -131,7 +131,7 @@ namespace Webgentle.BookStore.Migrations
 
             modelBuilder.Entity("Webgentle.BookStore.Data.Book", b =>
                 {
-                    b.Navigation("BookGalleries");
+                    b.Navigation("BookGallery");
                 });
 #pragma warning restore 612, 618
         }
