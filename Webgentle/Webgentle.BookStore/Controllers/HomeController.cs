@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Webgentle.BookStore.Models;
 
 namespace Webgentle.BookStore.Controllers
 {

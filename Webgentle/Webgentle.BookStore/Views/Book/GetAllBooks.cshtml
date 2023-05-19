@@ -16,24 +16,7 @@
         @foreach(var book in Model)
         {
             <div class="col-md-3">
-                <div class="card h-100">
-                    <img src="@book.CoverImageUrl" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h3 class="card-title">@book.Title</h3>
-                        <p class="card-text">@book.Description</p>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <a 
-                                asp-route-id="@book.Id"
-                                asp-route="bookDetailsRoute"
-                                class="btn btn-sm btn-outline-secondary"> 
-                                view Detail
-                            </a>
-                        </div>
-                        <small class="text-body-secondary">@book.Author</small>
-                    </div>
-                </div>
+               <partial name="_book" model="@book"></partial>
             </div>
         }
     </div>

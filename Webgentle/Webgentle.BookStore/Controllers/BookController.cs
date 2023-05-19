@@ -19,6 +19,7 @@ namespace Webgentle.BookStore.Controllers
             _languageRepository = languageRepository;
             _webHostEnvironment = webHostEnvironment;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -29,6 +30,7 @@ namespace Webgentle.BookStore.Controllers
             var data = await _bookRepository.GetAllBooks();
             return View(data);
         }
+
         [Route("book-detail/{id}", Name = "bookDetailsRoute")]
         public async Task<ViewResult> GetBook(int id)
         {
@@ -77,6 +79,13 @@ namespace Webgentle.BookStore.Controllers
                     }
                 }
 
+                if (bookModel.Pdf != null)
+                {
+                    string folder = "books/pdf/";
+                    var url = await UploadImage(folder, bookModel.Pdf);
+                    bookModel.PdfUrl = url;
+                }
+
                 int id = await _bookRepository.AddNewBook(bookModel);
                 if (id > 0)
                 {
@@ -89,7 +98,7 @@ namespace Webgentle.BookStore.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="folderPath"></param>
         /// <param name="formFile"></param>

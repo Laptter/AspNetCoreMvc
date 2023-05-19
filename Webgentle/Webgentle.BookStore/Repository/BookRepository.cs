@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
 using Webgentle.BookStore.Data;
 using Webgentle.BookStore.Models;
 
@@ -26,6 +25,7 @@ namespace Webgentle.BookStore.Repository
                 TotalPages = book.TotalPages.HasValue ? book.TotalPages.Value : 0,
                 UpdateTime = DateTime.UtcNow,
                 CoverImageUrl = book.CoverImageUrl,
+                PdfUrl = book.PdfUrl,
             };
             newBook.BookGallery = new List<BookGallery>();
             book.Gallery.ForEach(gallery =>
@@ -86,6 +86,7 @@ namespace Webgentle.BookStore.Repository
                     Language = book.Language.Name,
                     Category = book.Category,
                     CoverImageUrl = book.CoverImageUrl,
+                    PdfUrl = book.PdfUrl,
                     Gallery = book.BookGallery.Select(_ => new GalleryModel() { Id = _.Id, Name = _.Name, URL = _.URL }).ToList()
                 })
                 .FirstOrDefaultAsync();

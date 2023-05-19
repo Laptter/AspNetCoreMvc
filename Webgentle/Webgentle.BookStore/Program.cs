@@ -10,7 +10,6 @@ builder.Services.AddRazorPages()
     .AddViewOptions(option => option.HtmlHelperOptions.ClientValidationEnabled = true);
 #endif
 
-
 builder.Services.AddScoped<LanguageRepository>();
 builder.Services.AddScoped<BookRepository>();
 builder.Services.AddDbContext<BookStoreContext>(options =>

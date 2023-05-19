@@ -7,7 +7,6 @@ namespace Webgentle.BookStore.Data
         public BookStoreContext(DbContextOptions<BookStoreContext> options)
             : base(options)
         {
-
         }
 
         public DbSet<Book> Books { get; set; }
