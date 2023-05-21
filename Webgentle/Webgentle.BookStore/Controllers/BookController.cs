@@ -7,12 +7,12 @@ namespace Webgentle.BookStore.Controllers
 {
     public class BookController : Controller
     {
-        private readonly BookRepository _bookRepository;
-        private readonly LanguageRepository _languageRepository;
+        private readonly IBookRepository _bookRepository;
+        private readonly ILanguageRepository _languageRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BookController(BookRepository bookRepository,
-                              LanguageRepository languageRepository,
+        public BookController(IBookRepository bookRepository,
+                              ILanguageRepository languageRepository,
                               IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;

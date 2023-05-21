@@ -3,7 +3,7 @@ using Webgentle.BookStore.Data;
 
 namespace Webgentle.BookStore.Repository
 {
-    public class LanguageRepository
+    public class LanguageRepository : ILanguageRepository
     {
         private readonly BookStoreContext _bookStoreContext;
 
