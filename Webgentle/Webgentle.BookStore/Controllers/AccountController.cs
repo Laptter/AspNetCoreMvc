@@ -38,19 +38,25 @@ namespace Webgentle.BookStore.Controllers
             return View();
         }
 
+
+
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(SignInModel signInModel)
+        public async Task<IActionResult> Login(SignInModel signInModel, string returnUrl)
         {
             if (ModelState.IsValid)
             {
                 var result = await _accountRepository.PasswordSignInAsync(signInModel);
                 if (result.Succeeded)
                 {
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -58,6 +64,8 @@ namespace Webgentle.BookStore.Controllers
 
             return View(signInModel);
         }
+
+
 
         public async Task<IActionResult> Logout()
         {

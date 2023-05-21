@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Webgentle.BookStore.Data;
+using Webgentle.BookStore.Helpers;
 using Webgentle.BookStore.Models;
 using Webgentle.BookStore.Repository;
 
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Conn")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<BookStoreContext>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+
 builder.Services.Configure<IdentityOptions>(config =>
 {
     config.Password.RequiredLength = 5;
@@ -33,6 +36,11 @@ builder.Services.Configure<IdentityOptions>(config =>
     config.Password.RequiredUniqueChars = 1;
     // 需要一个非字母数字字符。
     config.Password.RequireNonAlphanumeric = false;
+});
+
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/account/login";
 });
 
 var app = builder.Build();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Webgentle.BookStore.Models;
 using Webgentle.BookStore.Repository;
@@ -42,7 +43,7 @@ namespace Webgentle.BookStore.Controllers
         {
             return _bookRepository.SearchBook(bookName, authorName);
         }
-
+        [Authorize]
         public async Task<ViewResult> AddNewBook(bool isSuccess = false, int bookId = 0)
         {
             ViewBag.IsSuccess = isSuccess;
@@ -52,6 +53,7 @@ namespace Webgentle.BookStore.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
